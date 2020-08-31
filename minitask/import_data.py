@@ -35,7 +35,7 @@ def start_import():
     search_index_test(elastic_search)
 
 def index_elastic_search(data, elastic_search):
-    '''parameter: data , dictionary with title, url, content'''
+    '''parameter: data, dictionary with title, url, content'''
     # print(data)
     
     try:
