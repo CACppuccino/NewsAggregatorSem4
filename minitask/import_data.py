@@ -25,7 +25,7 @@ def start_import():
         data=dict(title=row['article_title'], url=row['article_url'], content=row['article_content'])
         print('adding: ', data['title'])
         index_elastic_search(data, elastic_search)
-        
+
         # print('inserting:', data['title'])
         # res = requests.post(URL+str(index), json=data, auth=('admin', 'admin'), verify=False)
         # print('get response: ', res.text)
@@ -47,8 +47,11 @@ def index_elastic_search(data, elastic_search):
     print('success')
 
 def start_elastic_search():
+
     ip_url = ["127.0.0.1"]
+
     # initialize elastic search
+    
     new_es = es(ip_url, timeout=35, max_retries=8, retry_on_timeout=True)
     return new_es
 
