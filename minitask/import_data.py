@@ -37,6 +37,7 @@ def start_import():
 def index_elastic_search(data, elastic_search):
     '''parameter: data , dictionary with title, url, content'''
     # print(data)
+    
     try:
 
         # index_result = elastic_search.index(index='news', doc_type='web_news', body=data)
@@ -51,11 +52,14 @@ def start_elastic_search():
     ip_url = ["127.0.0.1"]
 
     # initialize elastic search
-    
+
     new_es = es(ip_url, timeout=35, max_retries=8, retry_on_timeout=True)
     return new_es
 
 def search_index_test(elastic_search):
+
+    # test with query to match 'ACT'
+
     test1 = {
             "query": {
                 "match": {
@@ -63,9 +67,7 @@ def search_index_test(elastic_search):
                 }
             }
         }
-
     # output = elastic_search.search(index='news', doc_type='web_news', body=test1)
-
     output = elastic_search.search(index='news', body=test1)
     print('searching total time: ', output['took'])
     for hit in output['hits']['hits']:
