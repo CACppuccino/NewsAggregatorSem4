@@ -21,9 +21,11 @@ def start_import():
     df = pd.read_csv('./extractor.csv')
     # print(df.iloc[0])
     for index, row in df.iterrows():
+
         data=dict(title=row['article_title'], url=row['article_url'], content=row['article_content'])
         print('adding: ', data['title'])
         index_elastic_search(data, elastic_search)
+        
         # print('inserting:', data['title'])
         # res = requests.post(URL+str(index), json=data, auth=('admin', 'admin'), verify=False)
         # print('get response: ', res.text)
@@ -36,7 +38,9 @@ def index_elastic_search(data, elastic_search):
     '''parameter: data , dictionary with title, url, content'''
     # print(data)
     try:
+
         # index_result = elastic_search.index(index='news', doc_type='web_news', body=data)
+
         index_result = elastic_search.index(index='news', body=data)
     except:
         print(data)
@@ -56,7 +60,9 @@ def search_index_test(elastic_search):
                 }
             }
         }
+
     # output = elastic_search.search(index='news', doc_type='web_news', body=test1)
+
     output = elastic_search.search(index='news', body=test1)
     print('searching total time: ', output['took'])
     for hit in output['hits']['hits']:
