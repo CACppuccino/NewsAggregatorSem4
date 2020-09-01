@@ -2,6 +2,7 @@ import requests
 from elasticsearch import Elasticsearch
 import json
 
+
 path2json_file = "./result.json"
 n_of_documents = 1000
 index_name = "search_set"
@@ -16,7 +17,8 @@ def get_documents_from_json(path, number):
 	return documents[:number]
 
 
-
+# check whether connect to server
+# create es connection
 def connect_to_es():
 	# make sure that we can hit the ES server
 	res = requests.get('http://localhost:9200')
