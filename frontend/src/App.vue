@@ -5,6 +5,7 @@
     <button @click="search">search</button>
     <div v-for="item in res" :key="item._id" style="box-shadow: 10px 3px;margin: 10px;">
       <h3>{{item._source.title}}</h3>
+      <label style="display:block;color:orange;">{{item._score}}</label>
       <p>{{item._source.short}}</p>
       <a :href="item._source.link">{{item._source.link}}</a>
       <label v-if="res.length==0" style="color:grey;">Search result empty</label>
