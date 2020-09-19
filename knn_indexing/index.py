@@ -11,15 +11,15 @@ import datetime
 
 es = Elasticsearch(s.URL, verify_certs=False, ssl_show_warn=False)
 index_name = "knn_index"
-if not es.indices.exists(index_name):
-    es.indices.create(index_name, {"settings": {"index.knn": True},
-                                   "mappings": {"properties": {"title_v": {"type": "knn_vector", "dimension": 50},
-                                                               "title": {"type": "text"},
-                                                               "art_v": {"type": "knn_vector", "dimension": 50},
-                                                               "article": {"type": "text"}}}})
-    print("Created knn index")
-else:
-    print("Index already exists")
+# if not es.indices.exists(index_name):
+#     es.indices.create(index_name, {"settings": {"index.knn": True},
+#                                    "mappings": {"properties": {"title_v": {"type": "knn_vector", "dimension": 50},
+#                                                                "title": {"type": "text"},
+#                                                                "art_v": {"type": "knn_vector", "dimension": 50},
+#                                                                "article": {"type": "text"}}}})
+#     print("Created knn index")
+# else:
+#     print("Index already exists")
 
 # Used for vectorisation
 embed = hub.load(s.MODEL_URL)
@@ -40,19 +40,19 @@ def vectorise_sent(sent: str):
     return vs[0]
 
 
-data_list = json.loads(open("../minitask/result.json").read())
-print("Data loaded")
-
-for i in range(len(data_list)):
-    data = data_list[i]
-    title = data["title"]
-    title_v = vectorise_sent(data["title"])
-    article = data["art"]
-    art_v = vectorise_sent(data["art"])
-    es.create(index=index_name, body={"title_v": title_v, "title": title, "art_v": art_v, "article": article}, id=i)
-    print(i, "inserted:", title)
-
-print("Insert Completed")
+# data_list = json.loads(open("../minitask/result.json").read())
+# print("Data loaded")
+#
+# for i in range(len(data_list)):
+#     data = data_list[i]
+#     title = data["title"]
+#     title_v = vectorise_sent(data["title"])
+#     article = data["art"]
+#     art_v = vectorise_sent(data["art"])
+#     es.create(index=index_name, body={"title_v": title_v, "title": title, "art_v": art_v, "article": article}, id=i)
+#     print(i, "inserted:", title)
+#
+# print("Insert Completed")
 
 
 """
