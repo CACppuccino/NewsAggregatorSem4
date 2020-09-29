@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, url_for, render_template, send_from_d
 from flask_cors import CORS, cross_origin
 from minitask.simple_search import simple_match_search
 from elasticsearch import Elasticsearch
+from knn_indexing import knn_query
 
 
 INDEX_NAME = 'news'
@@ -29,6 +30,16 @@ def search():
     if query:
         print('query is %s' % query)
         res = simple_match_search(ES, INDEX_NAME, query)
+        list_res = res['hits']['hits']
+        return jsonify(list_res)
+    return jsonify([])
+
+@app.route('/knn_search')
+@cross_origin()
+def knn_search():
+    query = request.args.get('query', None)
+    if query:
+        res = knn_query(query)
         list_res = res['hits']['hits']
         return jsonify(list_res)
     return jsonify([])
