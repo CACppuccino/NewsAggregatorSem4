@@ -1,7 +1,6 @@
-import re
 from elasticsearch import Elasticsearch
 import json
-import __settings__ as s
+import knn_indexing.__settings__ as s
 import tensorflow as tf
 import tensorflow_hub as hub
 import numpy as np
