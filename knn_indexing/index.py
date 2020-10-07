@@ -18,7 +18,8 @@ def init_knn_es_index(index_name):
                                        "mappings": {"properties": {"title_v": {"type": "knn_vector", "dimension": 50},
                                                                    "title": {"type": "text"},
                                                                    "art_v": {"type": "knn_vector", "dimension": 50},
-                                                                   "article": {"type": "text"}}}})
+                                                                   "art": {"type": "text"},
+                                                                   "link": {"type": "text"}}}})
         print("Created knn index")
     else:
         print("Index already exists")
@@ -45,11 +46,13 @@ def import_data_with_knn(index_name=INDEX_NAME):
 
     for i in range(len(data_list)):
         data = data_list[i]
+        link = data["link"]
         title = data["title"]
         title_v = vectorise_sent(data["title"])
         article = data["art"]
         art_v = vectorise_sent(data["art"])
-        ES.create(index=index_name, body={"title_v": title_v, "title": title, "art_v": art_v, "article": article}, id=i)
+        ES.create(index=index_name, body={"title_v": title_v, "title": title, "art_v": art_v, "art": article,
+                                          "link": link}, id=i)
         print(i, "inserted:", title)
 
     print("Insert Completed")
@@ -72,7 +75,7 @@ def knn_query(query: str, index_name=INDEX_NAME):
     if not ES:
         print('rebuilding es conn')
         ES = Elasticsearch(s.URL, verify_certs=False, ssl_show_warn=False)
-    results = ES.search(index=index_name, body=search_body, filter_path=["hits.hits._source.title"])
+    results = ES.search(index=index_name, body=search_body)
     return results
 """
 Only support searching of one field. Either title_v or art_v. Could create a functionality of choosing search field
