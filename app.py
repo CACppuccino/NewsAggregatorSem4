@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, url_for, render_template, send_from_d
 from flask_cors import CORS, cross_origin
 from minitask.simple_search import simple_match_search
 from elasticsearch import Elasticsearch
-
+from summary_1.summary import body_summary
 
 INDEX_NAME = 'news'
 ES = Elasticsearch([{'host' : 'localhost', 'port': 9200}])
@@ -30,6 +30,8 @@ def search():
         print('query is %s' % query)
         res = simple_match_search(ES, INDEX_NAME, query)
         list_res = res['hits']['hits']
+        # for one in list_res:
+        #     (one['_source'])['art'] = body_summary((one['_source'])['art'])
         return jsonify(list_res)
     return jsonify([])
 

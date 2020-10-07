@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <h1>News Aggregator Demo</h1>
-    <input placeholder="whats your problem" v-model="query"/>
+    <h1>News Aggregator</h1>
+    <input placeholder="Start your search" v-model="query"/>
     <button @click="search">search</button>
     <div v-for="item in res" :key="item._id" style="box-shadow: 10px 3px;margin: 10px;">
       <h3>{{item._source.title}}</h3>
