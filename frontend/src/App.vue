@@ -30,7 +30,8 @@ export default {
         console.log(response.body);
         var data = response.body;
         for (var i=0; i<data.length; i++) {
-          data[i]._source['short'] = data[i]._source.art.substring(50)
+          console.log(data[i]._source.art)
+          data[i]._source['short'] = data[i]._source.art
         }
         that.res = data;
       })
@@ -48,4 +49,5 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 </style>
