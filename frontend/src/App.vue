@@ -7,6 +7,9 @@
       <a :href="item._source.link">{{item._source.title}}</a>
       <p>{{item._source.short}}</p>
       <label v-if="res.length==0" style="color:grey;">Search result empty</label>
+
+      <el-button @click="search_keyword">{{keyword}}</el-button>
+      
     </div>
   </div>
 </template>
@@ -18,7 +21,8 @@ export default {
   data: function() {
     return {
       query: '',
-      res: []
+      res: [],
+      keyword:''
     }
   },
   methods: {
@@ -31,9 +35,28 @@ export default {
           data[i]._source['short'] = data[i]._source.art
         }
         that.res = data;
+        that.keyword = this.query;
+      })
+    }
+
+  ,
+
+  search_keyword: function() {
+      var that = this;
+      this.$http.get('http://localhost:5000/search', {params: {query: this.keyword}}).then(response => {
+        console.log(response.body);
+        var data = response.body;
+        for (var i=0; i<data.length; i++) {
+          data[i]._source['short'] = data[i]._source.art
+        }
+        that.res = data;
+        that.keyword = this.query;
       })
     }
   }
+
+  
+
 }
 </script>
 
@@ -46,6 +69,7 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 a {
     text-decoration:none;
     font-size:25px;
@@ -54,6 +78,12 @@ a {
     width:50px;
     line-height:35px;
     cursor: pointer;
+}
+
+el-button{
+  color:cyan;
+  cursor:pointer;
+  font-weight:870;
 }
 
 </style>
