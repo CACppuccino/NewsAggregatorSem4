@@ -3,11 +3,9 @@
     <h1>News Aggregator</h1>
     <input placeholder="Start your search" v-model="query"/>
     <button @click="search">search</button>
-    <div v-for="item in res" :key="item._id" style="box-shadow: 10px 3px;margin: 10px;">
-      <h3>{{item._source.title}}</h3>
-      <label style="display:block;color:orange;">{{item._score}}</label>
+    <div v-for="item in res" :key="item._id" style="box-shadow: 0px 1px;margin: 85px;text-align:left; line-height:37.8px;">
+      <a :href="item._source.link">{{item._source.title}}</a>
       <p>{{item._source.short}}</p>
-      <a :href="item._source.link">{{item._source.link}}</a>
       <label v-if="res.length==0" style="color:grey;">Search result empty</label>
     </div>
   </div>
@@ -30,7 +28,6 @@ export default {
         console.log(response.body);
         var data = response.body;
         for (var i=0; i<data.length; i++) {
-          console.log(data[i]._source.art)
           data[i]._source['short'] = data[i]._source.art
         }
         that.res = data;
@@ -48,6 +45,15 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+a {
+    text-decoration:none;
+    font-size:25px;
+    outline:none;
+    text-align:center;
+    width:50px;
+    line-height:35px;
+    cursor: pointer;
 }
 
 </style>
