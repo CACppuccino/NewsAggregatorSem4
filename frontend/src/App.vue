@@ -9,7 +9,7 @@
       <label v-if="res.length==0" style="color:grey;">Search result empty</label>
 
       <el-button @click="search_keyword">{{keyword}}</el-button>
-      
+
     </div>
   </div>
 </template>
@@ -55,8 +55,6 @@ export default {
     }
   }
 
-  
-
 }
 </script>
 
@@ -80,10 +78,9 @@ a {
     cursor: pointer;
 }
 
-el-button{
+el-button {
   color:cyan;
   cursor:pointer;
   font-weight:870;
 }
-
 </style>
