@@ -2,6 +2,7 @@ import requests
 from elasticsearch import Elasticsearch
 import json
 
+
 path2json_file = "./result.json"
 n_of_documents = 1000
 index_name = "search_set"

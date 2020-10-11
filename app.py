@@ -5,6 +5,7 @@ from elasticsearch import Elasticsearch
 from knn_indexing.index import knn_query
 
 
+
 INDEX_NAME = 'news'
 ES = Elasticsearch([{'host' : 'localhost', 'port': 9200}])
 app = Flask(__name__)
@@ -43,6 +44,7 @@ def knn_search():
         list_res = res['hits']['hits']
         return jsonify(list_res)
     return jsonify([])
+
 
 if __name__ == '__main__':
     app.run(debug=True)
