@@ -2,12 +2,14 @@ from flask import Flask, request, jsonify, url_for, render_template, send_from_d
 from flask_cors import CORS, cross_origin
 from minitask.simple_search import simple_match_search
 from elasticsearch import Elasticsearch
+from summary_1.summary import body_summary
 from knn_indexing.index import knn_query
-
 
 
 INDEX_NAME = 'news'
 ES = Elasticsearch([{'host' : 'localhost', 'port': 9200}])
+# INDEX_NAME = 'knn_index'
+# ES = Elasticsearch("https://admin:admin@localhost:9200", verify_certs=False, ssl_show_warn=False)
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -32,6 +34,9 @@ def search():
         print('query is %s' % query)
         res = simple_match_search(ES, INDEX_NAME, query)
         list_res = res['hits']['hits']
+        for one in list_res:
+            sum=body_summary((one['_source'])['art'])
+            (one['_source'])['art'] = sum[0]+sum[1]
         return jsonify(list_res)
     return jsonify([])
 

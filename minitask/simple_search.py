@@ -2,6 +2,7 @@ import requests
 from elasticsearch import Elasticsearch
 import json
 
+from summary_1.summary import body_summary
 
 path2json_file = "./result.json"
 n_of_documents = 1000
@@ -83,7 +84,7 @@ def main():
 	list_result = res['hits']['hits']
 
 	for one in list_result:
-		print(one['_source'])
+		print(body_summary((one['_source'])['art']))
 		print('--------------------------------------------------------')
 
 if __name__ == "__main__":
