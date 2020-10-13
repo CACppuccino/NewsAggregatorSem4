@@ -2,7 +2,8 @@
   <div id="app">
     <h1>News Aggregator</h1>
     <input placeholder="Start your search" v-model="query"/>
-    <button @click="search">search</button>
+    <button @click="origin_search">accurate_search</button>
+    <button @click="search">associative_search</button>
     <div v-for="item in res" :key="item._id" style="box-shadow: 0px 1px;margin: 85px;text-align:left; line-height:37.8px;">
       <a :href="item._source.link">{{item._source.title}}</a>
       <p>{{item._source.short}}</p>
@@ -53,8 +54,23 @@ export default {
         that.keyword = this.query;
       })
     }
-  }
+  
 
+  ,
+
+  origin_search: function() {
+      var that = this;
+      this.$http.get('http://localhost:5000/origin_search', {params: {query: this.query}}).then(response => {
+        console.log(response.body);
+        var data = response.body;
+        for (var i=0; i<data.length; i++) {
+          data[i]._source['short'] = data[i]._source.art
+        }
+        that.res = data;
+        that.keyword = this.query;
+      })
+    }
+          }
 }
 </script>
 
