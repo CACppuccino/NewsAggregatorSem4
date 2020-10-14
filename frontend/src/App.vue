@@ -75,6 +75,7 @@ export default {
   search_keyword: function(e) {
       var that = this;
       var keyword = e.target.dataset["val"];
+      this.query = keyword;
       const s = Date.now();
       this.$http.get('https://anu.jkl.io/search', {params: {query: keyword}}).then(response => {
         const d = Date.now();
@@ -82,11 +83,16 @@ export default {
         console.log(response.body);
         var data = response.body;
         for (var i=0; i<data.length; i++) {
-          data[i]._source['short'] = data[i]._source.art
+          if (data[i]._source.summary)
+            data[i]._source['short'] = data[i]._source.summary.substring(0, 200)
+          else
+            data[i]._source['short'] = data[i]._source.art.substring(0, 200)
+          data[i]._source['ner_shorts'] = data[i]._source['ner_list'].filter(e => 
+            (e[1] !== 'CARDINAL' && e[1] !== 'ORDINAL' && e[1] !== 'TIME' && e[1] !== 'DATE')
+          );
         }
         that.res = data;
 
-        that.keyword = this.query;
       })
     }
   
