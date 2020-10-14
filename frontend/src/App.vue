@@ -10,7 +10,7 @@
     <br/>
     <label style="color:grey;">Search spent intotal </label>
     <label style="color:grey;">{{timetotal}}</label>
-    <label style="color:grey;"> second.</label>
+    <label style="color:grey;"> seconds.</label>
 
     <br/>
     
@@ -20,7 +20,13 @@
 
       <label v-if="res.length==0" style="color:grey;">Search result empty</label>
 
-      <el-button @click="search_keyword">{{keyword}}</el-button>
+      <label v-for="keyword in item._source.ner_list" 
+        :key="keyword.id" 
+        :data-val="keyword[0]"
+        @click="search_keyword" 
+        style="font-size: 12px;color:#0AC2FF;">
+            {{keyword[0]}}
+      </label>
 
     </div>
   </div>
@@ -49,7 +55,10 @@ export default {
         console.log(response.body);
         var data = response.body;
         for (var i=0; i<data.length; i++) {
-          data[i]._source['short'] = data[i]._source.art
+          if (data[i]._source.summary)
+            data[i]._source['short'] = data[i]._source.summary.substring(100)
+          else
+            data[i]._source['short'] = data[i]._source.art.substring(100)
         }
         that.res = data;
 
@@ -59,10 +68,11 @@ export default {
 
   ,
 
-  search_keyword: function() {
+  search_keyword: function(e) {
       var that = this;
+      var keyword = e.target.dataset["val"];
       const s = Date.now();
-      this.$http.get('https://anu.jkl.io/search', {params: {query: this.keyword}}).then(response => {
+      this.$http.get('https://anu.jkl.io/search', {params: {query: keyword}}).then(response => {
         const d = Date.now();
         that.timetotal=(d-s)/1000;
         console.log(response.body);
@@ -88,7 +98,11 @@ export default {
         console.log(response.body);
         var data = response.body;
         for (var i=0; i<data.length; i++) {
-          data[i]._source['short'] = data[i]._source.art
+          if (data[i]._source.summary)
+            data[i]._source['short'] = data[i]._source.summary.substring(100)
+          else
+            data[i]._source['short'] = data[i]._source.art.substring(100)
+            
         }
         that.res = data;
 
