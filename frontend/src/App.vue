@@ -20,11 +20,12 @@
 
       <label v-if="res.length==0" style="color:grey;">Search result empty</label>
 
-      <label v-for="keyword in item._source.ner_list" 
+      <label 
+        v-for="keyword in item._source.ner_shorts" 
         :key="keyword.id" 
         :data-val="keyword[0]"
         @click="search_keyword" 
-        style="font-size: 12px;color:#0AC2FF;">
+        style="font-size: 12px;color:#0AC2FF;margin-right:10px;">
             {{keyword[0]}}
       </label>
 
@@ -56,9 +57,12 @@ export default {
         var data = response.body;
         for (var i=0; i<data.length; i++) {
           if (data[i]._source.summary)
-            data[i]._source['short'] = data[i]._source.summary.substring(100)
+            data[i]._source['short'] = data[i]._source.summary.substring(0, 200)
           else
-            data[i]._source['short'] = data[i]._source.art.substring(100)
+            data[i]._source['short'] = data[i]._source.art.substring(0, 200)
+          data[i]._source['ner_shorts'] = data[i]._source['ner_list'].filter(e => 
+            (e[1] !== 'CARDINAL' && e[1] !== 'ORDINAL' && e[1] !== 'TIME' && e[1] !== 'DATE')
+          );
         }
         that.res = data;
 
@@ -99,9 +103,9 @@ export default {
         var data = response.body;
         for (var i=0; i<data.length; i++) {
           if (data[i]._source.summary)
-            data[i]._source['short'] = data[i]._source.summary.substring(100)
+            data[i]._source['short'] = data[i]._source.summary.substring(0, 200)
           else
-            data[i]._source['short'] = data[i]._source.art.substring(100)
+            data[i]._source['short'] = data[i]._source.art.substring(0, 200)
             
         }
         that.res = data;
