@@ -43,7 +43,7 @@ def search():
         list_res = res['hits']['hits']
         for one in list_res:
             sum_txt = body_summary(one['_source']['art'])
-            one['_source']['summary'] = sum_txt
+            one['_source']['summary'] = ' '.join(sum_txt)
         return jsonify(list_res)
     return jsonify([])
 
