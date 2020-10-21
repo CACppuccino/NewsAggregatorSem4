@@ -42,8 +42,8 @@ def search():
         res = simple_match_search(ES, 'news', query)
         list_res = res['hits']['hits']
         for one in list_res:
-            sum=body_summary((one['_source'])['art'])
-            (one['_source'])['art'] = sum[0]+sum[1]
+            sum_txt = body_summary(one['_source']['art'])
+            one['_source']['summary'] = ' '.join(sum_txt)
         return jsonify(list_res)
     return jsonify([])
 
@@ -54,12 +54,6 @@ def knn_search():
     if query:
         res = knn_query(query)
         list_res = res['hits']['hits']
-        for one in list_res:
-
-            sum=body_summary((one['_source'])['art'])
-            
-            (one['_source'])['art'] = sum[0]+sum[1]
-
         return jsonify(list_res)
     return jsonify([])
 
