@@ -9,6 +9,9 @@ from elasticsearch import helpers as h
 """
 Need to create the index first before using this script
 curl -XPUT https://localhost:9200/example3 --insecure -u admin:admin
+
+After index is created, run this script to import data in tf-idf format
+python import_data.py
 """
 URL = 'https://localhost:9200/example3/_doc/'
 

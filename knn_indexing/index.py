@@ -42,6 +42,9 @@ def vectorise_sent(sent: str):
     return vs[0]
 
 def import_data_with_knn(index_name=INDEX_NAME):
+    """
+    Run this script to import the data in knn format
+    """
     init_knn_es_index(index_name)
     data_list = json.loads(open("../minitask/result.json").read())
     print("Data loaded")
@@ -63,6 +66,10 @@ def import_data_with_knn(index_name=INDEX_NAME):
 
 
 def knn_query(query: str, index_name=INDEX_NAME):
+    """
+    This is used for searching the query in knn indexes
+    Noted: query string also need to be vectorised before searching
+    """
     global ES
     title_v = vectorise_sent(query)
     search_body = {

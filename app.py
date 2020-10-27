@@ -17,25 +17,38 @@ ES = Elasticsearch("https://admin:admin@localhost:9200", verify_certs=False, ssl
 
 app = Flask(__name__)
 
-cors = CORS(app)
+cors = CORS(app) 
+# the CORS header is for dev phase, when serving frontend and backend in different ports
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
 def index_page():
+    """
+    Index page returning the html file
+    """
     return render_template('index.html')
 
 @app.route('/css/<path:filename>')
 def send_css(filename):
+    """
+    Routing the css static files
+    """
     return send_from_directory('static/css', filename)
 
 @app.route('/js/<path:filename>')
 def send_js(filename):
+    """
+    Routing the js static files
+    """
     return send_from_directory('static/js', filename)
 
 @app.route('/origin_search')
 @cross_origin()
 def search():
+    """
+    Origin Search: use tf-idf index to search
+    """
     query = request.args.get('query', None)
     if query:
         print('query is %s' % query)
@@ -50,6 +63,9 @@ def search():
 @app.route('/search')
 @cross_origin()
 def knn_search():
+    """
+    KNN search: use K-ANN indexing to search, KNN plugin is needed here
+    """
     query = request.args.get('query', None)
     if query:
         res = knn_query(query)
