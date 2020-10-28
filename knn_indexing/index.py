@@ -6,6 +6,8 @@ import tensorflow_hub as hub
 import numpy as np
 import re
 import datetime
+from summary.summary_func import body_summary
+from summary_1.name_entity import recognize_name_entity 
 
 
 ES = Elasticsearch(s.URL, verify_certs=False, ssl_show_warn=False)
@@ -50,9 +52,11 @@ def import_data_with_knn(index_name=INDEX_NAME):
         title = data["title"]
         title_v = vectorise_sent(data["title"])
         article = data["art"]
+        summary = body_summary(article) 
+        ner_list = recognize_name_entity(summary)
         art_v = vectorise_sent(data["art"])
         ES.create(index=index_name, body={"title_v": title_v, "title": title, "art_v": art_v, "art": article,
-                                          "link": link}, id=i)
+                                          "link": link, "summary": summary, "ner_list": ner_list}, id=i)
         print(i, "inserted:", title)
 
     print("Insert Completed")
@@ -102,5 +106,5 @@ for result in results["hits"]["hits"]:
     print(result)
 """
 if __name__ == '__main__':
-    #import_data_with_knn()
-    knn_query("some") 
+    import_data_with_knn()
+    #knn_query("some") 
