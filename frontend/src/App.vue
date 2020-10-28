@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    // u6250082 Xuguang Song
     <h1>News Aggregator</h1>
     <br/>
     <input placeholder="Start your search" v-model="query"/>
@@ -73,6 +74,7 @@ export default {
   ,
 
   search_keyword: function(e) {
+      // u6250082 Xuguang Song
       var that = this;
       var keyword = e.target.dataset["val"];
       this.query = keyword;
@@ -92,7 +94,6 @@ export default {
           );
         }
         that.res = data;
-
       })
     }
   
