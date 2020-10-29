@@ -74,7 +74,6 @@ export default {
   ,
 
   search_keyword: function(e) {
-      // u6250082 Xuguang Song
       var that = this;
       var keyword = e.target.dataset["val"];
       this.query = keyword;
@@ -101,6 +100,7 @@ export default {
   ,
 
   origin_search: function() {
+      // u6250082 Xuguang Song
       var that = this;
       const s = Date.now();
       this.$http.get('https://anu.jkl.io/origin_search', {params: {query: this.query}}).then(response => {

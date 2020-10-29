@@ -42,6 +42,7 @@ def search():
         res = simple_match_search(ES, 'news', query)
         list_res = res['hits']['hits']
         for one in list_res:
+            # u6250082 Xuguang Song
             sum_txt = body_summary(one['_source']['art'])
             one['_source']['summary'] = ' '.join(sum_txt)
         return jsonify(list_res)
