@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    // u6250082 Xuguang Song
     <h1>News Aggregator</h1>
     <br/>
     <input placeholder="Start your search" v-model="query"/>
@@ -10,7 +11,7 @@
     <br/>
     <label style="color:grey;">Search spent intotal </label>
     <label style="color:grey;">{{timetotal}}</label>
-    <label style="color:grey;"> second.</label>
+    <label style="color:grey;"> seconds.</label>
 
     <br/>
     
@@ -20,7 +21,14 @@
 
       <label v-if="res.length==0" style="color:grey;">Search result empty</label>
 
-      <el-button @click="search_keyword">{{keyword}}</el-button>
+      <label 
+        v-for="keyword in item._source.ner_shorts" 
+        :key="keyword.id" 
+        :data-val="keyword[0]"
+        @click="search_keyword" 
+        style="font-size: 12px;color:#0AC2FF;margin-right:10px;">
+            {{keyword[0]}}
+      </label>
 
     </div>
   </div>
@@ -49,7 +57,13 @@ export default {
         console.log(response.body);
         var data = response.body;
         for (var i=0; i<data.length; i++) {
-          data[i]._source['short'] = data[i]._source.art
+          if (data[i]._source.summary)
+            data[i]._source['short'] = data[i]._source.summary.substring(0, 200)
+          else
+            data[i]._source['short'] = data[i]._source.art.substring(0, 200)
+          data[i]._source['ner_shorts'] = data[i]._source['ner_list'].filter(e => 
+            (e[1] !== 'CARDINAL' && e[1] !== 'ORDINAL' && e[1] !== 'TIME' && e[1] !== 'DATE')
+          );
         }
         that.res = data;
 
@@ -59,20 +73,26 @@ export default {
 
   ,
 
-  search_keyword: function() {
+  search_keyword: function(e) {
       var that = this;
+      var keyword = e.target.dataset["val"];
+      this.query = keyword;
       const s = Date.now();
-      this.$http.get('https://anu.jkl.io/search', {params: {query: this.keyword}}).then(response => {
+      this.$http.get('https://anu.jkl.io/search', {params: {query: keyword}}).then(response => {
         const d = Date.now();
         that.timetotal=(d-s)/1000;
         console.log(response.body);
         var data = response.body;
         for (var i=0; i<data.length; i++) {
-          data[i]._source['short'] = data[i]._source.art
+          if (data[i]._source.summary)
+            data[i]._source['short'] = data[i]._source.summary.substring(0, 200)
+          else
+            data[i]._source['short'] = data[i]._source.art.substring(0, 200)
+          data[i]._source['ner_shorts'] = data[i]._source['ner_list'].filter(e => 
+            (e[1] !== 'CARDINAL' && e[1] !== 'ORDINAL' && e[1] !== 'TIME' && e[1] !== 'DATE')
+          );
         }
         that.res = data;
-
-        that.keyword = this.query;
       })
     }
   
@@ -80,6 +100,7 @@ export default {
   ,
 
   origin_search: function() {
+      // u6250082 Xuguang Song
       var that = this;
       const s = Date.now();
       this.$http.get('https://anu.jkl.io/origin_search', {params: {query: this.query}}).then(response => {
@@ -88,7 +109,11 @@ export default {
         console.log(response.body);
         var data = response.body;
         for (var i=0; i<data.length; i++) {
-          data[i]._source['short'] = data[i]._source.art
+          if (data[i]._source.summary)
+            data[i]._source['short'] = data[i]._source.summary.substring(0, 200)
+          else
+            data[i]._source['short'] = data[i]._source.art.substring(0, 200)
+            
         }
         that.res = data;
 
